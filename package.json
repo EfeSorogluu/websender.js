@@ -1,0 +1,21 @@
+{
+  "name": "websender-js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node --loader ts-node/esm src/index.ts",
+    "test": "node --loader ts-node/esm src/examples/connection_test.ts",
+    "command": "node --loader ts-node/esm src/examples/command_line.ts",
+    "merchant": "node --loader ts-node/esm src/examples/merchant.ts",
+    "input": "node --loader ts-node/esm src/examples/command_input.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^20.11.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "commander": "^13.1.0"
+  }
+}
