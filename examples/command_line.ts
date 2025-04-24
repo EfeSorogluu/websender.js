@@ -1,4 +1,4 @@
-import { Websender } from "../index.js";
+import { Websender } from "../src/index.js";
 
 const websender = new Websender({
     host: 'localhost',

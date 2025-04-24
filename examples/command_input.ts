@@ -1,4 +1,4 @@
-import { Websender } from "../index.js";
+import { Websender } from "../dist/index";
 import { Command } from "commander";
 
 const program = new Command();

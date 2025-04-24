@@ -1,7 +1,8 @@
 {
-  "name": "websender-js",
+  "name": "@efesoroglu/websender.js",
   "type": "module",
-  "version": "1.0.0",
+  "main": "dist/index.js",
+  "version": "1.0.1",
   "author": "Mert Efe SOROĞLU",
   "license": "Apache-2.0",
   "description": "Minecraft WebSender API for TypeScript",
@@ -15,7 +16,9 @@
     "test": "node --loader ts-node/esm src/examples/connection_test.ts",
     "command": "node --loader ts-node/esm src/examples/command_line.ts",
     "merchant": "node --loader ts-node/esm src/examples/merchant.ts",
-    "input": "node --loader ts-node/esm src/examples/command_input.ts"
+    "input": "node --loader ts-node/esm src/examples/command_input.ts",
+    "build": "tsc",
+    "prepare": "npm run build"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",

@@ -1,5 +1,5 @@
-import net from 'net';
-import crypto from 'crypto';
+import * as net from 'net';
+import * as crypto from 'crypto';
 import type { WebsenderConfig, WebsenderResponse } from '../types/websender';
 
 interface SocketError extends Error {
