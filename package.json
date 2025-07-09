@@ -7,7 +7,7 @@
     "import": "./dist/esm/index.js",
     "require": "./dist/cjs/index.cjs.js"
   },
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Mert Efe SOROĞLU",
   "license": "Apache-2.0",
   "description": "Minecraft WebSender API for TypeScript",
