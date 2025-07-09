@@ -1,13 +1,11 @@
 {
   "name": "websender.js",
   "type": "module",
-  "main": "dist/cjs/index.js",
-  "module": "dist/index.js",
+  "main": "./dist/cjs/index.cjs.js",
+  "module": "./dist/esm/index.js",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/cjs/index.js"
-    }
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.cjs.js"
   },
   "version": "1.0.2",
   "author": "Mert Efe SOROĞLU",
@@ -24,7 +22,9 @@
     "command": "node --loader ts-node/esm src/examples/command_line.ts",
     "merchant": "node --loader ts-node/esm src/examples/merchant.ts",
     "input": "node --loader ts-node/esm src/examples/command_input.ts",
-    "build": "tsc && tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc --project tsconfig.json",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build": "npm run build:esm && npm run build:cjs",
     "prepare": "npm run build"
   },
   "devDependencies": {

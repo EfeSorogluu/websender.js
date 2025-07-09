@@ -3,5 +3,6 @@
   "compilerOptions": {
     "module": "CommonJS",
     "outDir": "./dist/cjs"
-  }
+  },
+  "include": ["src/index.cjs.ts", "src/libs/**/*.ts", "src/types/**/*.ts"]
 } 
