@@ -137,3 +137,7 @@ out
 # Bun cache
 .bun
 bun.lock
+
+node_modules
+dist
+.env

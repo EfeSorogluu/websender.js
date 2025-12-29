@@ -1,6 +1,18 @@
-# WebSender JS
+# websender-js
 
-WebSender JS is a TypeScript library that allows you to connect to Minecraft servers via WebSocket and send commands. This library provides a secure and easy way to interact with Minecraft servers.
+A dual ESM/CJS TypeScript library for Minecraft Websender.
+
+## Usage
+
+### ESM
+```js
+import { Websender } from 'websender-js';
+```
+
+### CommonJS
+```js
+const { Websender } = require('websender-js');
+```
 
 ## Features
 
@@ -15,8 +27,6 @@ WebSender JS is a TypeScript library that allows you to connect to Minecraft ser
 ```bash
 npm install websender-js
 ```
-
-## Usage
 
 ### Basic Connection
 

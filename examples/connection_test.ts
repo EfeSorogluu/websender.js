@@ -19,8 +19,10 @@ async function main() {
     
     if (!commandResult.success) {
         console.error('Command error:', commandResult.error);
+        websender.disconnect();
     } else {
         console.log('Command sent successfully!');
+        websender.disconnect();
     }
 
 }   

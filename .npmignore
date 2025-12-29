@@ -1,0 +1,6 @@
+src
+*.test.*
+*.spec.*
+.env
+tsconfig*.json
+tsup.config.ts 

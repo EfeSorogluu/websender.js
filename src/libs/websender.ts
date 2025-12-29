@@ -35,19 +35,33 @@ export class Websender {
                         this.writeRawByte(1);
                         
                         // Wait for challenge
-                        const challenge = await this.readRawInt();
+                        const challengeUnsigned = await this.readRawInt();
+                        
+                        // Convert to signed int32 (server uses signed int)
+                        const challenge = challengeUnsigned > 0x7FFFFFFF 
+                            ? challengeUnsigned - 0x100000000 
+                            : challengeUnsigned;
+                        
                         // Calculate and send hash
+                        const hashInput = challenge.toString() + this.password;
                         const hash = crypto.createHash('sha512')
-                            .update(challenge.toString() + this.password)
+                            .update(hashInput)
                             .digest('hex');
                         this.writeString(hash);
                         
                         // Wait for response
                         const response = await this.readRawInt();
                         
-                        resolve({
-                            success: response === 1
-                        });
+                        if (response === 1) {
+                            resolve({
+                                success: true
+                            });
+                        } else {
+                            resolve({
+                                success: false,
+                                error: 'Authentication failed. Please check your password.'
+                            });
+                        }
                     } catch (error) {
                         console.error('[WebSenderJS] Authentication error:', error);
                         resolve({
@@ -71,6 +85,8 @@ export class Websender {
                         errorMessage = 'Connection timed out. The server might be down or unreachable';
                     } else if (error.code === 'ENOTFOUND') {
                         errorMessage = `Could not resolve host ${this.host}. Please check if the hostname is correct`;
+                    } else if (error.message) {
+                        errorMessage = error.message;
                     }
                     
                     resolve({
@@ -150,10 +166,14 @@ export class Websender {
         }
     }
 
+    public async close(): Promise<WebsenderResponse> {
+        return this.disconnect();
+    }
+
     private writeRawInt(value: number): void {
         if (!this.socket) return;
         const buffer = Buffer.alloc(4);
-        buffer.writeInt32BE(value, 0);
+        buffer.writeUInt32BE(value, 0);
         this.socket.write(buffer);
     }
 
@@ -167,12 +187,25 @@ export class Websender {
     private writeString(str: string): void {
         if (!this.socket) return;
         const chars = str.split('');
-        this.writeRawInt(chars.length);
+        const length = chars.length;
+        
+        // Calculate total buffer size: 4 bytes for length + 2 bytes per character
+        const bufferSize = 4 + (length * 2);
+        const buffer = Buffer.alloc(bufferSize);
+        
+        // Write length as uint32 big-endian
+        buffer.writeUInt32BE(length, 0);
+        
+        // Write each character as 2 bytes (big-endian)
+        let offset = 4;
         for (const char of chars) {
             const code = char.charCodeAt(0);
-            this.writeRawByte((0xff & (code >> 8)));
-            this.writeRawByte((0xff & code));
+            buffer.writeUInt8((0xff & (code >> 8)), offset++);
+            buffer.writeUInt8((0xff & code), offset++);
         }
+        
+        // Send entire buffer at once
+        this.socket.write(buffer);
     }
 
     private readRawInt(): Promise<number> {
@@ -185,7 +218,7 @@ export class Websender {
             const readData = () => {
                 const buffer = this.socket!.read(4);
                 if (buffer) {
-                    resolve(buffer.readInt32BE(0));
+                    resolve(buffer.readUInt32BE(0));
                 } else {
                     this.socket!.once('readable', readData);
                 }
